@@ -24,7 +24,7 @@ My portfolio site kateroshh.ru backend part
 
 ## Built With 🛠
 
-[![My Skills](https://skillicons.dev/icons?i=node,express,mongodb)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=nodejs,express,mongodb)](https://skillicons.dev)
 
 ## Done ✅
 
