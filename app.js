@@ -4,7 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { errors } = require("celebrate");
 const helmet = require("helmet");
-const process = require("dotenv").config();
+require("dotenv").config();
 
 const { MONGODB_URL_DEV, PORT_DEV } = require("./constants");
 const { PORT = PORT_DEV, MONGO_URL = MONGODB_URL_DEV } = process.env;
@@ -12,6 +12,7 @@ const { PORT = PORT_DEV, MONGO_URL = MONGODB_URL_DEV } = process.env;
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 const errorHandler = require("./middlewares/error-handler");
 const { limiter } = require("./middlewares/rate-limit");
+const { NotFoundError } = require("./errors/errors");
 
 const app = express();
 app.use(helmet());
@@ -37,6 +38,26 @@ app.use(requestLogger); // логгер запросов
 app.use(limiter);
 
 /////////////////////////////////////////
+const Skill = require("./models/skill");
+const SkillsRouter = express.Router();
+
+SkillsRouter.post("/skills", (req, res) => {
+  Skill.create({ name: "SQL" })
+    .then((skill) => res.send(skill))
+    .catch((error) => res.send(error));
+});
+
+SkillsRouter.get("/skills", (req, res, next) => {
+  Skill.find({})
+    .then((skills) => res.send(skills))
+    .catch(next);
+});
+
+app.use(SkillsRouter);
+
+app.get("/hello", (req, res) => {
+  res.send("Hello World!");
+});
 
 ////////////////////////////////////////
 
